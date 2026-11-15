@@ -1,1 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --exxoda: #464C9A;
+  --exxoda-oscuro: #363B7E;
+  --exxoda-profundo: #252A5C;
+  --exxoda-claro: #ECEDF8;
+}
+
+/* Botón principal */
+.btn-exxoda {
+  background: var(--exxoda);
+  border-color: var(--exxoda);
+  color: #fff;
+}
+.btn-exxoda:hover,
+.btn-exxoda:focus-visible {
+  background: var(--exxoda-oscuro);
+  border-color: var(--exxoda-oscuro);
+  color: #fff;
+}
+
+/* Enlaces */
+a {
+  color: var(--exxoda);
+}
+a:hover {
+  color: var(--exxoda-oscuro);
+}
+
+/* Inputs: el borde y el brillo al hacer clic usan el índigo en vez del azul de Bootstrap */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--exxoda);
+  box-shadow: 0 0 0 0.25rem rgba(70, 76, 154, 0.25);
+}
