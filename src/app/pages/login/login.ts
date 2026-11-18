@@ -27,8 +27,8 @@ export class Login {
 
   private usuarios: Usuario[] = [
     { correo: 'tecnico@exxoda.pe', clave: '123456', rol: 'tecnico', nombre: 'Pedro Pérez'},
-    { correo: 'admin@exxoda.pe', clave: '123456', rol: 'tecnico', nombre: 'Juan Pérez'},
-    { correo: 'cliente@manpowergroup.pe', clave: '123456', rol: 'tecnico', nombre: 'Victor Aguirre'}
+    { correo: 'admin@exxoda.pe', clave: '123456', rol: 'admin', nombre: 'Juan Pérez'},
+    { correo: 'cliente@manpowergroup.pe', clave: '123456', rol: 'cliente', nombre: 'Victor Aguirre'}
   ]
 
   private inicioPorRol: Record<Usuario['rol'], string> = {
