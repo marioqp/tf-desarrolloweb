@@ -1,45 +1,45 @@
 <div class="container-fluid">
-  <div class="row min-vh-100">
+    <div class="row min-vh-100">
 
     <!-- Panel de marca: oculto en el celular -->
     <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between p-5 text-white panel-marca">
-      <img src="assets/exxoda_logo.jpg" alt="Exxoda Ciberseguridad" class="logo-login">
-      <div class="mb-5">
-        <h1 class="display-6 fw-bold">Todas las solicitudes de soporte en un solo lugar.</h1>
+        <img src="assets/exxoda_logo.jpg" alt="Exxoda Ciberseguridad" class="logo-login">
+        <div class="mb-5">
+            <h1 class="display-6 fw-bold">Todas las solicitudes de soporte en un solo lugar.</h1>
         <p class="lead">Registra cada caso, asigna un técnico responsable y guarda el historial de atención.</p>
-      </div>
-      <small>Área de soporte técnico · Exxoda Tecnología</small>
+    </div>
+        <small>Área de soporte técnico · Exxoda Tecnología</small>
     </div>
 
     <!-- Formulario -->
     <div class="col-lg-5 d-flex align-items-center justify-content-center p-4 bg-light">
-      <form (ngSubmit)="ingresar()" class="card p-4 shadow-sm w-100" style="max-width: 400px" novalidate>
-        <h2 class="h4 fw-bold mb-1">Iniciar sesión</h2>
-        <p class="text-secondary mb-4">Ingresa con tu correo y contraseña.</p>
+        <form (ngSubmit)="ingresar()" class="card p-4 shadow-sm w-100" style="max-width: 400px" novalidate>
+            <h2 class="h4 fw-bold mb-1">Iniciar sesión</h2>
+            <p class="text-secondary mb-4">Ingresa con tu correo y contraseña.</p>
 
         @if (errorCredenciales) {
-          <div class="alert alert-danger" role="alert">Correo o contraseña incorrectos.</div>
+            <div class="alert alert-danger" role="alert">Correo o contraseña incorrectos.</div>
         }
 
         <div class="mb-3">
-          <label for="correo" class="form-label">Correo</label>
-          <input type="email" id="correo" name="correo" class="form-control"
-                 [(ngModel)]="correo"
-                 [class.is-invalid]="enviado && !correo.trim()">
-          <div class="invalid-feedback">Ingresa tu correo.</div>
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" id="correo" name="correo" class="form-control"
+                [(ngModel)]="correo"
+                [class.is-invalid]="enviado && !correo.trim()">
+            <div class="invalid-feedback">Ingresa tu correo.</div>
         </div>
 
         <div class="mb-4">
-          <label for="clave" class="form-label">Contraseña</label>
-          <input type="password" id="clave" name="clave" class="form-control"
-                 [(ngModel)]="clave"
-                 [class.is-invalid]="enviado && !clave">
-          <div class="invalid-feedback">Ingresa tu contraseña.</div>
+            <label for="clave" class="form-label">Contraseña</label>
+            <input type="password" id="clave" name="clave" class="form-control"
+                [(ngModel)]="clave"
+                [class.is-invalid]="enviado && !clave">
+            <div class="invalid-feedback">Ingresa tu contraseña.</div>
         </div>
 
         <button type="submit" class="btn btn-exxoda w-100">Ingresar</button>
-      </form>
+        </form>
     </div>
 
-  </div>
+    </div>
 </div>

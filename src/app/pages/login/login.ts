@@ -33,7 +33,7 @@ export class Login {
 
   private inicioPorRol: Record<Usuario['rol'], string> = {
     tecnico: '/pendientes',
-    admin: '/panel-admin',
+    admin: '/admin/panel',
     cliente: '/mis-solicitudes'
   }
 

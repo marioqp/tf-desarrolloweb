@@ -1,34 +1,46 @@
 :root {
-  --exxoda: #464C9A;
-  --exxoda-oscuro: #363B7E;
-  --exxoda-profundo: #252A5C;
-  --exxoda-claro: #ECEDF8;
+    --exxoda: #464C9A;
+    --exxoda-oscuro: #363B7E;
+    --exxoda-profundo: #252A5C;
+    --exxoda-claro: #ECEDF8;
 }
+
+.chip {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.chip-pendiente { background: #FEF3C7; color: #92400E; }
+.chip-atencion  { background: #DBEAFE; color: #1E40AF; }
+.chip-espera    { background: #EDE9FE; color: #5B21B6; }
+.chip-cerrada   { background: #DCFCE7; color: #166534; }
 
 /* Botón principal */
 .btn-exxoda {
-  background: var(--exxoda);
-  border-color: var(--exxoda);
-  color: #fff;
+    background: var(--exxoda);
+    border-color: var(--exxoda);
+    color: #fff;
 }
 .btn-exxoda:hover,
 .btn-exxoda:focus-visible {
-  background: var(--exxoda-oscuro);
-  border-color: var(--exxoda-oscuro);
-  color: #fff;
+    background: var(--exxoda-oscuro);
+    border-color: var(--exxoda-oscuro);
+    color: #fff;
 }
 
 /* Enlaces */
 a {
-  color: var(--exxoda);
+    color: var(--exxoda);
 }
 a:hover {
-  color: var(--exxoda-oscuro);
+    color: var(--exxoda-oscuro);
 }
 
 /* Inputs: el borde y el brillo al hacer clic usan el índigo en vez del azul de Bootstrap */
 .form-control:focus,
 .form-select:focus {
-  border-color: var(--exxoda);
-  box-shadow: 0 0 0 0.25rem rgba(70, 76, 154, 0.25);
+    border-color: var(--exxoda);
+    box-shadow: 0 0 0 0.25rem rgba(70, 76, 154, 0.25);
 }

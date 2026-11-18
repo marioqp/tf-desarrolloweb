@@ -1,0 +1,76 @@
+<h1 class="h3 fw-bold mb-1">Panel resumen</h1>
+<p class="text-secondary mb-4">Quién está con cada caso y cómo se reparte el trabajo</p>
+
+<div class="row g-3 mb-4">
+  @for (estado of estados; track estado) {
+    <div class="col-6 col-lg-3">
+      <div class="card h-100 p-3">
+        <span [class]="'chip align-self-start ' + claseEstado(estado)">{{ estado }}</span>
+        <span class="display-6 fw-bold mt-2">{{ contarPorEstado(estado) }}</span>
+      </div>
+    </div>
+  }
+</div>
+
+<h2 class="h5 fw-bold mb-3">Carga por técnico</h2>
+<div class="card mb-4">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr><th>Técnico</th><th>Casos activos</th><th>En espera</th></tr>
+      </thead>
+      <tbody>
+        @for (fila of cargaPorTecnico(); track fila.nombre) {
+          <tr>
+            <td>{{ fila.nombre }}</td>
+            <td>{{ fila.activos }}</td>
+            <td>{{ fila.enEspera }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h2 class="h5 fw-bold mb-3">Reasignar solicitudes activas</h2>
+
+@if (mensaje) {
+  <div class="alert alert-success" role="status">{{ mensaje }}</div>
+}
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr><th>Código</th><th>Cliente</th><th>Estado</th><th>Técnico actual</th><th>Reasignar a</th></tr>
+      </thead>
+      <tbody>
+        @for (s of solicitudesActivas(); track s.codigo) {
+          <tr>
+            <td class="fw-semibold">{{ s.codigo }}</td>
+            <td>{{ s.cliente }}</td>
+            <td><span [class]="'chip ' + claseEstado(s.estado)">{{ s.estado }}</span></td>
+            <td>{{ nombreTecnico(s.tecnicoId) }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <select class="form-select" [(ngModel)]="seleccion[s.codigo]"
+                        [attr.aria-label]="'Nuevo técnico para ' + s.codigo">
+                  <option [ngValue]="null">Elegir técnico</option>
+                  @for (t of tecnicos; track t.id) {
+                    @if (t.id !== s.tecnicoId) {
+                      <option [ngValue]="t.id">{{ t.nombre }} {{ t.apellidos }}</option>
+                    }
+                  }
+                </select>
+                <button type="button" class="btn btn-outline-secondary"
+                        [disabled]="!seleccion[s.codigo]" (click)="reasignar(s)">
+                  Reasignar
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

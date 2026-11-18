@@ -1,0 +1,25 @@
+<div class="d-flex flex-column flex-md-row min-vh-100">
+
+  <nav class="sidebar d-flex flex-column p-3" aria-label="Menú del administrador">
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <img src="assets/logo-exxoda.png" alt="" class="logo-mini">
+      <span class="fw-bold fs-5">Exxoda Soporte</span>
+    </div>
+
+    <a routerLink="/admin/panel" routerLinkActive="activo" class="enlace-menu">Panel resumen</a>
+    <a routerLink="/admin/tecnicos" routerLinkActive="activo" class="enlace-menu">Registrar técnico</a>
+
+    <div class="mt-auto pt-3 border-top">
+      <div class="fw-semibold">{{ nombreUsuario }}</div>
+      <div class="text-secondary small mb-2">Administrador</div>
+      <button type="button" class="btn btn-link p-0 text-decoration-none btn-cerrar" (click)="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    </div>
+  </nav>
+
+  <main class="contenido flex-grow-1 p-4 bg-light">
+    <router-outlet />
+  </main>
+
+</div>

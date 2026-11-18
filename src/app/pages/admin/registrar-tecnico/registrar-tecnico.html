@@ -1,0 +1,52 @@
+<h1 class="h3 fw-bold mb-1">Registrar técnico</h1>
+<p class="text-secondary mb-4">Da acceso a un nuevo integrante del área de soporte</p>
+
+@if (exito) {
+  <div class="alert alert-success" role="status">{{ exito }}</div>
+}
+
+<form (ngSubmit)="guardar()" class="card p-4 mb-4" novalidate>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input id="nombre" name="nombre" class="form-control" [(ngModel)]="nombre"
+             [class.is-invalid]="enviado && !nombre.trim()">
+      <div class="invalid-feedback">Ingresa el nombre.</div>
+    </div>
+    <div class="col-md-6">
+      <label for="apellidos" class="form-label">Apellidos</label>
+      <input id="apellidos" name="apellidos" class="form-control" [(ngModel)]="apellidos"
+             [class.is-invalid]="enviado && !apellidos.trim()">
+      <div class="invalid-feedback">Ingresa los apellidos.</div>
+    </div>
+    <div class="col-md-6">
+      <label for="correo" class="form-label">Correo</label>
+      <input id="correo" name="correo" type="email" class="form-control" [(ngModel)]="correo"
+             [class.is-invalid]="enviado && (!correo.trim() || errorCorreo)">
+      <div class="invalid-feedback">{{ errorCorreo || 'Ingresa el correo.' }}</div>
+    </div>
+    <div class="col-md-6">
+      <label for="clave" class="form-label">Contraseña</label>
+      <input id="clave" name="clave" type="password" class="form-control" [(ngModel)]="clave"
+             [class.is-invalid]="enviado && !clave">
+      <div class="invalid-feedback">Ingresa una contraseña.</div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <button type="submit" class="btn btn-exxoda">Guardar técnico</button>
+  </div>
+</form>
+
+<h2 class="h5 fw-bold mb-3">Técnicos registrados</h2>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>Correo</th></tr></thead>
+      <tbody>
+        @for (t of tecnicos; track t.id) {
+          <tr><td>{{ t.nombre }} {{ t.apellidos }}</td><td>{{ t.correo }}</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
