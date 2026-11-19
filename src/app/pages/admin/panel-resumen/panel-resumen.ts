@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Estado, Solicitud, solicitudes, tecnicos } from '../../../data/datos';
+import { Estado, Solicitud, claseEstado, nombreCliente, nombreTecnico, solicitudes, tecnicos } from '../../../data/datos';
 
 @Component({
   imports: [FormsModule],
@@ -21,10 +21,9 @@ export class PanelResumen {
     return this.solicitudes.filter(s => s.estado === estado).length;
   }
 
-  nombreTecnico(id: number | null): string {
-    const t = this.tecnicos.find(t => t.id === id);
-    return t ? `${t.nombre} ${t.apellidos}` : 'Sin asignar';
-  }
+  nombreTecnico = nombreTecnico
+  nombreCliente = nombreCliente
+  claseEstado = claseEstado
 
   solicitudesActivas(): Solicitud[] {
     return this.solicitudes.filter(s => s.estado === 'En atención' || s.estado === 'En espera');
@@ -39,16 +38,6 @@ export class PanelResumen {
         enEspera: suyas.filter(s => s.estado === 'En espera').length
       };
     });
-  }
-
-  claseEstado(estado: Estado): string {
-    const clases: Record<Estado, string> = {
-      'Pendiente': 'chip-pendiente',
-      'En atención': 'chip-atencion',
-      'En espera': 'chip-espera',
-      'Cerrada': 'chip-cerrada'
-    };
-    return clases[estado];
   }
 
   reasignar(solicitud: Solicitud): void {

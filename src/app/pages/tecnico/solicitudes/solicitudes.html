@@ -1,0 +1,75 @@
+<h1 class="h3 fw-bold mb-1">Solicitudes</h1>
+<p class="text-secondary mb-4">Busca un caso por código o filtra la lista</p>
+
+<div class="d-flex gap-2 mb-3">
+  <button type="button" class="btn" [class.btn-dark]="!soloMias" [class.btn-outline-secondary]="soloMias"
+          (click)="soloMias = false">Todas</button>
+  <button type="button" class="btn" [class.btn-dark]="soloMias" [class.btn-outline-secondary]="!soloMias"
+          (click)="soloMias = true">Mis solicitudes ({{ cantidadMias() }})</button>
+</div>
+
+<div class="card p-3 mb-3">
+  <div class="row g-2 align-items-end">
+    <div class="col-md-3">
+      <label for="buscar" class="form-label small fw-semibold">Buscar por código</label>
+      <input id="buscar" class="form-control" placeholder="SOL-0000" [(ngModel)]="busqueda">
+    </div>
+    <div class="col-md-2">
+      <label for="f-estado" class="form-label small fw-semibold">Estado</label>
+      <select id="f-estado" class="form-select" [(ngModel)]="estado">
+        <option value="">Todos</option>
+        <option>Pendiente</option>
+        <option>En atención</option>
+        <option>En espera</option>
+        <option>Cerrada</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="f-tipo" class="form-label small fw-semibold">Tipo</label>
+      <select id="f-tipo" class="form-select" [(ngModel)]="tipo">
+        <option value="">Todos</option>
+        <option>Incidencia</option>
+        <option>Cambio de configuración</option>
+        <option>Falla del producto</option>
+        <option>Capacitación</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="f-prio" class="form-label small fw-semibold">Prioridad</label>
+      <select id="f-prio" class="form-select" [(ngModel)]="prioridad">
+        <option value="">Todas</option>
+        <option>Alta</option>
+        <option>Media</option>
+        <option>Baja</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-outline-secondary w-100" (click)="limpiar()">Limpiar filtros</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr><th>Código</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th>Prioridad</th><th>Técnico</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (s of filtrar(); track s.codigo) {
+          <tr>
+            <td class="fw-semibold">{{ s.codigo }}</td>
+            <td>{{ nombreCliente(s.clienteId) }}</td>
+            <td>{{ s.tipo }}</td>
+            <td><span [class]="'chip ' + claseEstado(s.estado)">{{ s.estado }}</span></td>
+            <td><span [class]="'chip ' + clasePrioridad(s.prioridad)">{{ s.prioridad }}</span></td>
+            <td>{{ nombreTecnico(s.tecnicoId) }}</td>
+            <td><a class="fw-semibold text-decoration-none" [routerLink]="['/tecnico/solicitudes', s.codigo]">Abrir</a></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="text-center text-secondary p-4">No se encontraron solicitudes</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

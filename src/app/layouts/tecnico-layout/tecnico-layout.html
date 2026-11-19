@@ -1,0 +1,27 @@
+<div class="d-flex flex-column flex-md-row min-vh-100">
+
+  <nav class="sidebar d-flex flex-column p-3" aria-label="Menú del técnico">
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <img src="/assets/exxoda_logo.jpg" alt="" class="logo-mini">
+      <span class="fw-bold fs-5">Exxoda Soporte</span>
+    </div>
+
+    <a routerLink="/tecnico/pendientes" routerLinkActive="activo" class="enlace-menu">Pendientes</a>
+    <a routerLink="/tecnico/solicitudes" routerLinkActive="activo" class="enlace-menu">Solicitudes</a>
+    <a routerLink="/tecnico/nueva-solicitud" routerLinkActive="activo" class="enlace-menu">Nueva solicitud</a>
+    <a routerLink="/tecnico/clientes" routerLinkActive="activo" class="enlace-menu">Clientes</a>
+
+    <div class="mt-auto pt-3 border-top">
+      <div class="fw-semibold">{{ nombreUsuario }}</div>
+      <div class="text-secondary small mb-2">Técnico de soporte</div>
+      <button type="button" class="btn btn-link p-0 text-decoration-none btn-cerrar" (click)="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    </div>
+  </nav>
+
+  <main class="contenido flex-grow-1 p-4 bg-light">
+    <router-outlet />
+  </main>
+
+</div>
