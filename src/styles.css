@@ -56,6 +56,16 @@ a:hover {
     color: #fff;
 }
 
+@media (min-width: 768px) {
+    .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        align-self: flex-start;
+        overflow-y: auto;
+    }
+}
+
 .logo-mini {
     width: 40px;
     height: 40px;
