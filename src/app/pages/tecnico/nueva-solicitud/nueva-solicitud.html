@@ -1,8 +1,107 @@
 <h1 class="h3 fw-bold mb-1">Nueva solicitud</h1>
-<p class="text-secondary mb-4">Registra un nuevo caso de soporte técnico.</p>
+<p class="text-secondary mb-4">Registra el caso apenas llegue por chat o correo</p>
 
-<div class="card p-4">
-  <p class="text-secondary mb-0">
-    Pantalla en construcción: aquí van la HU06 (registrar solicitud) y HU07 (prioridad).
-  </p>
+@if (codigoCreado) {
+  <div class="alert alert-success d-flex flex-wrap justify-content-between align-items-center gap-2" role="status">
+    <span>Solicitud <strong>{{ codigoCreado }}</strong> registrada con estado Pendiente.</span>
+    <a class="fw-semibold text-decoration-none" [routerLink]="['/tecnico/solicitudes', codigoCreado]">Ver detalle</a>
+  </div>
+}
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <form (ngSubmit)="registrar()" class="card p-4" novalidate>
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <label for="cliente" class="form-label">Cliente</label>
+          <select id="cliente" name="cliente" class="form-select" [(ngModel)]="clienteId"
+                  [class.is-invalid]="enviado && !clienteId">
+            <option [ngValue]="null">Selecciona un cliente</option>
+            @for (c of clientes; track c.id) {
+              <option [ngValue]="c.id">{{ c.razonSocial }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">Selecciona el cliente.</div>
+          <small class="text-secondary">¿No está en la lista? <a routerLink="/tecnico/clientes" class="text-decoration-none">Registrar cliente</a></small>
+        </div>
+
+        <div class="col-md-6">
+          <span class="form-label d-block">Canal</span>
+          <div class="d-flex gap-3 mt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="c-chat" name="canal" value="Chat" [(ngModel)]="canal">
+              <label class="form-check-label" for="c-chat">Chat</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="c-correo" name="canal" value="Correo" [(ngModel)]="canal">
+              <label class="form-check-label" for="c-correo">Correo</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="tipo" class="form-label">Tipo de requerimiento</label>
+          <select id="tipo" name="tipo" class="form-select" [(ngModel)]="tipo"
+                  [class.is-invalid]="enviado && !tipo">
+            <option value="">Selecciona el tipo</option>
+            @for (t of tipos; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">Selecciona el tipo.</div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="producto" class="form-label">Producto involucrado</label>
+          <select id="producto" name="producto" class="form-select" [(ngModel)]="producto">
+            @for (p of productos; track p) {
+              <option [value]="p">{{ p }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- HU07: prioridad -->
+        <div class="col-12">
+          <span class="form-label d-block">Prioridad</span>
+          <div class="d-flex gap-3 mt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="p-alta" name="prioridad" value="Alta" [(ngModel)]="prioridad">
+              <label class="form-check-label" for="p-alta">Alta</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="p-media" name="prioridad" value="Media" [(ngModel)]="prioridad">
+              <label class="form-check-label" for="p-media">Media (por defecto)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="p-baja" name="prioridad" value="Baja" [(ngModel)]="prioridad">
+              <label class="form-check-label" for="p-baja">Baja</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="descripcion" class="form-label">Descripción del problema</label>
+          <textarea id="descripcion" name="descripcion" class="form-control" rows="4" [(ngModel)]="descripcion"
+                    [class.is-invalid]="enviado && !descripcion.trim()"
+                    placeholder="Describe lo que reporta el cliente"></textarea>
+          <div class="invalid-feedback">Escribe la descripción.</div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <a routerLink="/tecnico/pendientes" class="btn btn-outline-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-exxoda">Registrar solicitud</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card p-4">
+      <h2 class="h5 fw-bold mb-3">Al registrar</h2>
+      <p class="text-secondary small mb-2">Se genera un código único.</p>
+      <p class="text-secondary small mb-2">Se guarda la fecha de registro.</p>
+      <p class="text-secondary small mb-0">La solicitud queda en estado Pendiente y aparece en la bandeja de todos los técnicos.</p>
+    </div>
+  </div>
 </div>

@@ -46,6 +46,7 @@ export interface Solicitud {
   tecnicoId: number | null;   // null = todavía nadie la tomó
   descripcion: string;
   solucion?: string;
+  fechaCierre?: string;
   avances?: Avance[];
 }
 
@@ -63,7 +64,12 @@ export const tecnicos: Tecnico[] = [
   { id: 2, nombre: 'Ana',    apellidos: 'Torres',  correo: 'atorres@exxoda.pe',  clave: '123456' },
   { id: 3, nombre: 'Jorge',  apellidos: 'Salas',   correo: 'jsalas@exxoda.pe',   clave: '123456' },
   { id: 4, nombre: 'Diana',  apellidos: 'Flores',  correo: 'dflores@exxoda.pe',  clave: '123456' },
-  { id: 5, nombre: 'Miguel', apellidos: 'Paredes', correo: 'mparedes@exxoda.pe', clave: '123456' }
+  { id: 5, nombre: 'Miguel', apellidos: 'Paredes', correo: 'mparedes@exxoda.pe', clave: '123456' },
+  { id: 6,  nombre: 'Adrian', apellidos: '', correo: 'adrian_tecnico@exxoda.pe',   clave: '123456' },
+  { id: 7,  nombre: 'Mario', apellidos: '', correo: 'mario_tecnico@exxoda.pe',    clave: '123456' },
+  { id: 8,  nombre: 'Jesus', apellidos: '', correo: 'jesus_tecnico@exxoda.pe',    clave: '123456' },
+  { id: 9,  nombre: 'Giordano', apellidos: '', correo: 'giordano_tecnico@exxoda.pe', clave: '123456' },
+  { id: 10, nombre: 'Doylith', apellidos: '', correo: 'doylith_tecnico@exxoda.pe',  clave: '123456' }  
 ];
 
 export const clientes: Cliente[] = [
@@ -72,7 +78,11 @@ export const clientes: Cliente[] = [
   { id: 3, razonSocial: 'Servicios Integrales del Pacífico S.R.L.', ruc: '20601234567', contacto: 'Carlos Mendoza', correo: 'cmendoza@sip.pe', telefono: '946 321 875' },
   { id: 4, razonSocial: 'Comercializadora del Sur S.A.', ruc: '20456789123', contacto: 'Lucía Torres', correo: 'ltorres@cds.pe', telefono: '(054) 221-456' },
   { id: 5, razonSocial: 'Inversiones Nova Perú E.I.R.L.', ruc: '20607894512', contacto: 'José Ramírez', correo: 'jramirez@nova.pe', telefono: '955 123 456' },
-  { id: 6, razonSocial: 'Rimac Seguros', ruc: '00000000000', contacto: 'Contacto de prueba', correo: 'cliente@ejemplo.invalid', telefono: 'Sin registrar' }
+  { id: 6, razonSocial: 'Rimac Seguros', ruc: '00000000000', contacto: 'Contacto de prueba', correo: 'cliente@ejemplo.invalid', telefono: 'Sin registrar' },
+  // Organizaciones de las cuentas de cliente del equipo
+  { id: 7, razonSocial: 'Alicorp', ruc: '00000000007', contacto: 'Mario', correo: 'mario_cliente@alicorp.com.pe', telefono: 'Sin registrar' },
+  { id: 8, razonSocial: 'Interbank', ruc: '00000000008', contacto: 'Jesus', correo: 'jesus_cliente@interbank.pe', telefono: 'Sin registrar' },
+  { id: 9, razonSocial: 'Universidad Peruana de Ciencias Aplicadas', ruc: '00000000009', contacto: 'Giordano', correo: 'giordano_cliente@upc.edu.pe', telefono: 'Sin registrar' }
 ];
 
 export const solicitudes: Solicitud[] = [
@@ -144,7 +154,7 @@ export const solicitudes: Solicitud[] = [
 // ---------- Funciones de ayuda (las usan varias pantallas) ----------
 export function nombreTecnico(id: number | null): string {
   const t = tecnicos.find(t => t.id === id);
-  return t ? `${t.nombre} ${t.apellidos}` : 'Sin asignar';
+  return t ? `${t.nombre} ${t.apellidos}`.trim() : 'Sin asignar';
 }
 
 export function nombreCliente(id: number): string {
@@ -178,4 +188,15 @@ export function fechaComoNumero(fecha: string): number {
 
 export function usuarioActual(): UsuarioSesion | null {
   return JSON.parse(sessionStorage.getItem('usuario') ?? 'null');
+}
+
+// Fecha de hoy como 'dd/mm/aaaa'
+export function fechaHoy(): string {
+  return new Date().toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+// Fecha y hora actual como 'dd/mm/aaaa, hh:mm'
+export function fechaHoraAhora(): string {
+  const hora = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', hour12: false });
+  return `${fechaHoy()}, ${hora}`;
 }

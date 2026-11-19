@@ -38,6 +38,21 @@
         </div>
 
         <button type="submit" class="btn btn-exxoda w-100">Ingresar</button>
+<p class="small text-secondary mt-3 mb-0">Contraseña de demostración para todas las cuentas: <strong>123456</strong></p>
+<details class="mt-2">
+  <summary class="small">Ver cuentas de prueba del equipo</summary>
+  <ul class="list-unstyled small mt-2 mb-0">
+    @for (cuenta of cuentasDemo(); track cuenta.correo) {
+      <li class="d-flex justify-content-between gap-2 py-1 border-bottom">
+        <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-start"
+                (click)="usarCuenta(cuenta)">
+          {{ cuenta.correo }}
+        </button>
+        <span class="text-secondary text-nowrap">{{ etiquetaRol[cuenta.rol] }}</span>
+      </li>
+    }
+  </ul>
+</details>
         </form>
     </div>
 
