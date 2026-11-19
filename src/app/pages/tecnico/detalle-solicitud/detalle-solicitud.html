@@ -1,10 +1,150 @@
 <a routerLink="/tecnico/solicitudes" class="text-decoration-none">← Volver a solicitudes</a>
 
-<h1 class="h3 fw-bold mt-3 mb-1">Detalle de solicitud {{ codigo }}</h1>
-<p class="text-secondary mb-4">Consulta el problema reportado y registra avances.</p>
+@if (solicitud; as s) {
+  <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mb-1">
+    <h1 class="h3 fw-bold mb-0 me-2">{{ s.codigo }} · {{ s.tipo }}</h1>
+    <span [class]="'chip ' + claseEstado(s.estado)">{{ s.estado }}</span>
+    <span [class]="'chip ' + clasePrioridad(s.prioridad)">{{ s.prioridad }}</span>
+  </div>
+  <p class="text-secondary mb-4">Registrada el {{ s.fecha }} · Tiempo de atención: {{ tiempoAtencion() }}</p>
 
-<div class="card p-4">
-  <p class="text-secondary mb-0">
-    Pantalla en construcción: aquí van la HU08 (detalle), HU12 (estado), HU14 (avances) y HU15 (cierre).
-  </p>
-</div>
+  @if (mensaje) {
+    <div class="alert alert-success" role="status">{{ mensaje }}</div>
+  }
+
+  <div class="row g-4">
+    <!-- Columna izquierda: datos y avances -->
+    <div class="col-lg-8">
+
+      <!-- HU08: datos de la solicitud -->
+      <div class="card p-4 mb-4">
+        <h2 class="h5 fw-bold mb-3">Datos de la solicitud</h2>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Cliente</small>
+            <a routerLink="/tecnico/clientes/historial" [queryParams]="{ cliente: s.clienteId }"
+               class="text-decoration-none">{{ nombreCliente(s.clienteId) }}</a>
+          </div>
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Canal</small>{{ s.canal }}
+          </div>
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Producto</small>{{ s.producto }}
+          </div>
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Técnico responsable</small>{{ nombreTecnico(s.tecnicoId) }}
+          </div>
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Fecha de registro</small>{{ s.fecha }}
+          </div>
+          <div class="col-md-4">
+            <small class="text-secondary fw-semibold d-block">Fecha de cierre</small>{{ s.fechaCierre || '—' }}
+          </div>
+          <div class="col-12">
+            <small class="text-secondary fw-semibold d-block">Descripción</small>
+            <p class="mb-0">{{ s.descripcion }}</p>
+          </div>
+          @if (s.solucion) {
+            <div class="col-12">
+              <small class="text-secondary fw-semibold d-block">Solución aplicada</small>
+              <p class="mb-0">{{ s.solucion }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- HU14: avances -->
+      <div class="card p-4">
+        <h2 class="h5 fw-bold mb-3">Avances de la atención</h2>
+
+        @if (esResponsable && s.estado !== 'Cerrada') {
+          <label for="avance" class="form-label">Nuevo avance</label>
+          <textarea id="avance" class="form-control" rows="3" [(ngModel)]="nuevoAvance"
+                    [class.is-invalid]="errorAvance" placeholder="Escribe el diagnóstico o la acción realizada"></textarea>
+          <div class="invalid-feedback">{{ errorAvance }}</div>
+          <div class="mt-2 mb-4">
+            <button type="button" class="btn btn-exxoda" (click)="agregarAvance()">Agregar avance</button>
+          </div>
+        }
+
+        @for (a of s.avances ?? []; track $index) {
+          <div class="d-flex gap-3 mb-3">
+            <span class="punto mt-2" aria-hidden="true"></span>
+            <div>
+              <small class="text-secondary">{{ a.fecha }} · {{ a.responsable }}</small>
+              <p class="mb-0">{{ a.texto }}</p>
+            </div>
+          </div>
+        } @empty {
+          <p class="text-secondary mb-0">Todavía no se han registrado avances.</p>
+        }
+      </div>
+    </div>
+
+    <!-- Columna derecha: acciones -->
+    <div class="col-lg-4">
+
+      @if (s.estado === 'Pendiente') {
+        <!-- HU08 escenario 2 -->
+        <div class="card p-4">
+          <h2 class="h5 fw-bold mb-2">Sin asignar</h2>
+          <p class="text-secondary small">Esta solicitud todavía no tiene técnico responsable.</p>
+          <button type="button" class="btn btn-exxoda" (click)="tomar()">Tomar solicitud</button>
+        </div>
+
+      } @else if (s.estado === 'Cerrada') {
+        <!-- HU15 escenario 3 -->
+        <div class="card p-4">
+          <h2 class="h5 fw-bold mb-2">Solicitud cerrada</h2>
+          <p class="text-secondary small mb-0">Puedes consultar su información, pero ya no se pueden agregar avances ni cambiar su estado.</p>
+        </div>
+
+      } @else if (!esResponsable) {
+        <!-- HU12 escenario 2 -->
+        <div class="card p-4">
+          <h2 class="h5 fw-bold mb-2">Asignada a {{ nombreTecnico(s.tecnicoId) }}</h2>
+          <p class="text-secondary small mb-0">Solo el técnico responsable puede cambiar el estado, registrar avances o cerrarla.</p>
+        </div>
+
+      } @else {
+        <!-- HU12: estado -->
+        <div class="card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3">Estado</h2>
+          <label for="estado" class="form-label">Cambiar estado</label>
+          <select id="estado" class="form-select mb-3" [(ngModel)]="nuevoEstado">
+            <option>En atención</option>
+            <option>En espera</option>
+          </select>
+          @if (nuevoEstado === 'En espera') {
+            <label for="motivo" class="form-label">Motivo</label>
+            <input id="motivo" class="form-control" [(ngModel)]="motivo" [class.is-invalid]="errorEstado"
+                   placeholder="Ej.: esperando acceso remoto">
+            <div class="invalid-feedback">{{ errorEstado }}</div>
+          }
+          <div class="mt-3">
+            <button type="button" class="btn btn-outline-secondary" (click)="actualizarEstado()">Actualizar estado</button>
+          </div>
+        </div>
+
+        <!-- HU15: cerrar -->
+        <div class="card p-4">
+          <h2 class="h5 fw-bold mb-3">Cerrar solicitud</h2>
+          <label for="solucion" class="form-label">Solución aplicada (obligatoria)</label>
+          <textarea id="solucion" class="form-control" rows="3" [(ngModel)]="solucion"
+                    [class.is-invalid]="errorSolucion" placeholder="Describe cómo se resolvió el caso"></textarea>
+          <div class="invalid-feedback">{{ errorSolucion }}</div>
+          <div class="mt-3">
+            <button type="button" class="btn btn-dark" (click)="cerrar()">Cerrar solicitud</button>
+          </div>
+          <p class="text-secondary small mt-3 mb-0">Al cerrar se guarda la fecha de cierre y el tiempo total de atención.</p>
+        </div>
+      }
+    </div>
+  </div>
+
+} @else {
+  <div class="card p-4 mt-3 text-center">
+    <strong>No se encontró la solicitud {{ codigo }}</strong>
+    <p class="text-secondary mb-0">Revisa el código o vuelve a la lista de solicitudes.</p>
+  </div>
+}
