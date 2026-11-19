@@ -48,7 +48,7 @@
         @for (s of solicitudesActivas(); track s.codigo) {
           <tr>
             <td class="fw-semibold">{{ s.codigo }}</td>
-            <td>{{ s.cliente }}</td>
+            <td>{{ nombreCliente(s.clienteId) }}</td>
             <td><span [class]="'chip ' + claseEstado(s.estado)">{{ s.estado }}</span></td>
             <td>{{ nombreTecnico(s.tecnicoId) }}</td>
             <td>
