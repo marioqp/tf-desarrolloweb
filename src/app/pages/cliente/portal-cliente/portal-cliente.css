@@ -1,9 +1,9 @@
 :host { display: block; }
 .portal { min-height: 100vh; background: #f5f6fb; color: #192333; }
-.barra-superior { background: #fff; border-bottom: 1px solid #e0e5e9; padding: 17px 30px; display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.barra-superior { background: var(--exxoda); color: #fff; padding: 17px 30px; display: flex; justify-content: space-between; align-items: center; gap: 18px; }
 .marca { display: flex; align-items: center; gap: 10px; font-size: 17px; }
 .marca-icono { width: 37px; height: 37px; border-radius: 9px; object-fit: cover; }
-.usuario { display: flex; align-items: center; gap: 16px; color: #596574; font-size: 13px; }
+.usuario { display: flex; align-items: center; gap: 16px; color: rgba(255, 255, 255, 0.85); font-size: 13px; }
 .usuario button { background: #fff; border: 1px solid #cfd6df; border-radius: 8px; padding: 10px 15px; cursor: pointer; color: #192333; }
 .contenido { max-width: 1270px; padding: 34px 30px; margin: 0 auto; }
 .historia { color: var(--exxoda); font-size: 12px; font-weight: 700; margin: 0 0 5px; }
