@@ -1,0 +1,100 @@
+<div class="workspace">
+    <app-sidebar></app-sidebar>
+    <main class="main">
+        <app-navbar title="Historial de cliente" subtitle="Consulta las solicitudes y atenciones anteriores"></app-navbar>
+        <section class="content">
+            <div class="toolbar">
+                <div>
+                    <h2 style="font-size:17px;margin:0 0 5px">Historial de atenciones</h2>
+                    <div class="muted" style="font-size:12px">Selecciona un cliente para consultar sus casos</div>
+                </div>
+                <select class="search" [(ngModel)]="clienteId">
+                    <option [ngValue]="0">Seleccionar cliente</option>
+
+                    @for(c of clientes;track c.id){
+
+                        <option [ngValue]="c.id">{{c.razonSocial}}</option>
+
+                    }
+                </select>
+            </div>
+            
+            @if(clienteSeleccionado; as cliente){
+                <div class="card-panel" style="margin-bottom:18px">
+                <div class="toolbar">
+                    <div>
+                        <h3 style="font-size:17px;margin:0">{{cliente.razonSocial}}</h3>
+                        <div class="muted" style="font-size:12px;margin-top:5px">RUC: {{cliente.ruc}} · Contacto: {{cliente.contacto}}</div>
+                    </div>
+                    <div class="stat" style="padding:12px 18px">
+                        <span class="muted">Solicitudes registradas</span>
+                        <strong>{{historial.length}}</strong>
+                    </div>
+                </div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <small>Correo de contacto</small>
+                        <strong>{{cliente.correo}}</strong>
+                    </div><div class="info-item">
+                        <small>Teléfono</small>
+                        <strong>{{cliente.telefono}}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <input class="search" [(ngModel)]="tipoFiltro" placeholder="Filtrar por tipo de solicitud">
+                <input class="search" [(ngModel)]="productoFiltro" placeholder="Filtrar por producto">
+                <button class="btn-outline" (click)="tipoFiltro='';productoFiltro=''">Limpiar filtros</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Código</th>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Producto</th>
+                            <th>Técnico</th>
+                            <th>Estado</th>
+                            <th>Solución</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(s of historial;track s.codigo){
+                            <tr>
+                                <td>
+                                    <strong>{{s.codigo}}</strong>
+                                </td>
+                                <td>{{s.fecha}}</td>
+                                <td>{{s.tipo}}</td>
+                                <td>{{s.producto}}</td>
+                                <td>{{s.tecnico}}</td>
+                                <td>
+                                    <span class="status" [class.pending]="s.estado==='Pendiente'" [class.progress]="s.estado==='En atención'" [class.waiting]="s.estado==='En espera'" [class.closed]="s.estado==='Cerrada'">
+                                        {{s.estado}}
+                                    </span>
+                                </td>
+                                <td>{{s.solucion || 'En proceso / Sin registrar'}}</td>
+                            </tr>}
+                            @empty{
+                            <tr>
+                                <td colspan="7" class="empty">
+                                    Este cliente no tiene atenciones registradas que coincidan con los filtros.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+                
+        @else{<div class="card-panel empty">
+                    <div style="font-size:30px;margin-bottom:10px">♙</div>
+                    <strong>Selecciona un cliente</strong>
+                    <p>Elige una organización para visualizar sus solicitudes y soluciones.</p>
+                </div>}
+                    <p class="muted" style="margin-top:18px">
+                        <a class="link" routerLink="/login">Volver a iniciar sesión</a>
+                    </p>
+                </section>
+            </main>
+        </div>
